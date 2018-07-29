@@ -72,3 +72,21 @@ def test_setup_should_compute_number_of_trips_with_exact_stops_1():
     trips = setup.get_number_of_trips_with_exact_stops('A-C', 4)
     # then
     expect(trips).to(be(3))
+
+
+def test_setup_should_compute_length_of_the_shortest_route_1():
+    # given
+    setup = Setup('AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7')
+    # when
+    trips = setup.get_length_of_the_shortest_route('A-C')
+    # then
+    expect(trips).to(be(9))
+
+
+def test_setup_should_compute_length_of_the_shortest_route_1():
+    # given
+    setup = Setup('AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7')
+    # when
+    trips = setup.get_length_of_the_shortest_route('B-B')
+    # then
+    expect(trips).to(be(9))
