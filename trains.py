@@ -15,9 +15,9 @@ class RouteInfo(object):
     def __init__(self, config):
         try:
             paths = [p.strip() for p in config.split(',')]
-            self.routes = {p[0]: dict() for p in paths}
+            self.routes = dict()
             for p in paths:
-                self.routes[p[0]][p[1]] = int(p[2:])
+                self.routes.setdefault(p[0], dict())[p[1]] = int(p[2:])
         except ValueError:
             raise InvalidRouteConfiguration('')
 
