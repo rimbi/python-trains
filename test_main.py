@@ -90,3 +90,12 @@ def test_setup_should_compute_length_of_the_shortest_route_1():
     length = setup.get_length_of_the_shortest_route('B-B')
     # then
     expect(length).to(be(9))
+
+
+def test_setup_should_compute_the_number_of_different_routes():
+    # given
+    setup = Setup('AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7')
+    # when
+    length = setup.get_number_of_different_routes_within_a_distance('C-C', 30)
+    # then
+    expect(length).to(be(7))

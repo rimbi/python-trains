@@ -33,7 +33,7 @@ class Setup(object):
         except KeyError:
             raise NoSuchRoute
 
-    def __get_routes(self, start, end, visited, stops):
+    def __get_routes(self, start, end, visited, stops=10):
         if stops < 0:
             return []
         stops -= 1
@@ -61,7 +61,6 @@ class Setup(object):
     def get_length_of_the_shortest_route(self, route):
         start, end = route.split('-')
         visited = []
-        MAX_STOPS = 10
 
         def path_length(p):
             start, end = p.split('-')
@@ -70,7 +69,22 @@ class Setup(object):
         def route_length(route):
             return sum(path_length(p) for p in route)
 
-        return min(route_length(r) for r in self.__get_routes(start, end, visited, MAX_STOPS))
+        return min(route_length(r)
+                   for r in self.__get_routes(start, end, visited))
+
+    def get_number_of_different_routes_within_a_distance(self, route, max_distance):
+        start, end = route.split('-')
+        visited = []
+
+        def path_length(p):
+            start, end = p.split('-')
+            return self.routes[start][end]
+
+        def route_length(route):
+            return sum(path_length(p) for p in route)
+
+        return len([r for r in self.__get_routes(start, end, visited)
+                    if route_length(r) < max_distance])
 
 
 def print_distance(route):
@@ -101,6 +115,14 @@ def print_length_of_shortest_route(route):
         print 'NO SUCH ROUTE'
 
 
+def print_number_of_different_routes_within_a_distance(route, distance):
+    try:
+        print setup.get_number_of_different_routes_within_a_distance(
+            route, distance)
+    except NoSuchRoute:
+        print 'NO SUCH ROUTE'
+
+
 if __name__ == '__main__':
     route = 'AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7'
     setup = Setup(route)
@@ -113,3 +135,4 @@ if __name__ == '__main__':
     print_number_of_routes_with_exact_stops('A-C', 4)
     print_length_of_shortest_route('A-C')
     print_length_of_shortest_route('B-B')
+    print_number_of_different_routes_within_a_distance('C-C', 30)
