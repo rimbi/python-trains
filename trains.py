@@ -29,23 +29,23 @@ class RouteInfo(object):
         except KeyError:
             raise NoSuchRoute
 
-    def __get_routes(self, start, end, visited, stops=10):
+    def __get_routes(self, start, end, stops=10, visited=()):
         if stops < 0:
-            return []
+            return ()
         stops -= 1
         trips = []
         for x in self.routes.get(start, dict()).keys():
             edge = '{}-{}'.format(start, x)
+            new_visited = visited + (edge,)
             if x == end:
                 # print visited, edge, stops
-                trips += [visited + [edge]]
-            trips += self.__get_routes(x, end, visited + [edge], stops)
+                trips += [new_visited]
+            trips += self.__get_routes(x, end, stops, new_visited)
         return trips
 
     def __get_number_of_routes(self, route, stops, predicate):
         start, end = route.split('-')
-        visited = []
-        return len([s for s in self.__get_routes(start, end, visited, stops)
+        return len([s for s in self.__get_routes(start, end, stops)
                     if predicate(len(s))])
 
     def get_number_of_routes_with_max_stops(self, route, stops):
@@ -56,7 +56,6 @@ class RouteInfo(object):
 
     def __get_routes_with_distance(self, route):
         start, end = route.split('-')
-        visited = []
 
         def path_length(p):
             start, end = p.split('-')
@@ -66,7 +65,7 @@ class RouteInfo(object):
             return sum(path_length(p) for p in route)
 
         return ((r, route_length(r))
-                for r in self.__get_routes(start, end, visited))
+                for r in self.__get_routes(start, end))
 
     def get_length_of_the_shortest_route(self, route):
         return min(l for _, l in self.__get_routes_with_distance(route))
