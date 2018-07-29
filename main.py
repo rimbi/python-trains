@@ -46,15 +46,17 @@ class Setup(object):
             trips += self.__x(x, end, visited + [edge], stops)
         return trips
 
-    def get_number_of_trips_with_max_steps(self, route, max_stops):
+    def __get_number_of_trips(self, route, stops, predicate):
         start, end = route.split('-')
         visited = []
-        return len([stops for stops in self.__x(start, end, visited, max_stops) if stops >= 0])
+        return len([s for s in self.__x(start, end, visited, stops)
+                    if predicate(s)])
+
+    def get_number_of_trips_with_max_stops(self, route, stops):
+        return self.__get_number_of_trips(route, stops, lambda x: x >= 0)
 
     def get_number_of_trips_with_exact_stops(self, route, stops):
-        start, end = route.split('-')
-        visited = []
-        return len([s for s in self.__x(start, end, visited, stops) if s == 0])
+        return self.__get_number_of_trips(route, stops, lambda x: x == 0)
 
 
 def print_distance(route):
@@ -66,7 +68,7 @@ def print_distance(route):
 
 def print_number_of_trips_with_max_stops(route, stops):
     try:
-        print setup.get_number_of_trips_with_max_steps(route, stops)
+        print setup.get_number_of_trips_with_max_stops(route, stops)
     except NoSuchRoute:
         print 'NO SUCH ROUTE'
 

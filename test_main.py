@@ -60,7 +60,7 @@ def test_setup_should_compute_number_of_trips_with_max_stops_1():
     # given
     setup = Setup('AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7')
     # when
-    trips = setup.get_number_of_trips_with_max_steps('C-C', 3)
+    trips = setup.get_number_of_trips_with_max_stops('C-C', 3)
     # then
     expect(trips).to(be(2))
 
