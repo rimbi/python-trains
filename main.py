@@ -33,27 +33,28 @@ class Setup(object):
         except KeyError:
             raise NoSuchRoute
 
-    def __x(self, start, end, visited, max_stops):
-        if max_stops == 0:
-            return 0
-        max_stops -= -1
-        trips = 0
+    def __x(self, start, end, visited, stops):
+        if stops < 0:
+            return []
+        stops -= 1
+        trips = []
         for x in self.routes.get(start, dict()).keys():
             edge = '{}-{}'.format(start, x)
-            if edge in visited:
-                continue
-            visited.add(edge)
             if x == end:
-                trips += 1
-            else:
-                trips += self.__x(x, end, visited, max_stops)
+                # print visited, edge, stops
+                trips += [stops]
+            trips += self.__x(x, end, visited + [edge], stops)
         return trips
 
-    def get_number_of_trips(self, route, max_stops):
+    def get_number_of_trips_with_max_steps(self, route, max_stops):
         start, end = route.split('-')
-        trips = 0
-        visited = set()
-        return self.__x(start, end, visited, max_stops)
+        visited = []
+        return len([stops for stops in self.__x(start, end, visited, max_stops) if stops >= 0])
+
+    def get_number_of_trips_with_exact_stops(self, route, stops):
+        start, end = route.split('-')
+        visited = []
+        return len([s for s in self.__x(start, end, visited, stops) if s == 0])
 
 
 def print_distance(route):
@@ -63,9 +64,16 @@ def print_distance(route):
         print 'NO SUCH ROUTE'
 
 
-def print_number_of_trips_with_max_stops(route, max_stops):
+def print_number_of_trips_with_max_stops(route, stops):
     try:
-        print setup.get_number_of_trips(route, max_stops)
+        print setup.get_number_of_trips_with_max_steps(route, stops)
+    except NoSuchRoute:
+        print 'NO SUCH ROUTE'
+
+
+def print_number_of_trips_with_exact_stops(route, stops):
+    try:
+        print setup.get_number_of_trips_with_exact_stops(route, stops)
     except NoSuchRoute:
         print 'NO SUCH ROUTE'
 
@@ -79,3 +87,4 @@ if __name__ == '__main__':
     print_distance('A-E-B-C-D')
     print_distance('A-E-D')
     print_number_of_trips_with_max_stops('C-C', 3)
+    print_number_of_trips_with_exact_stops('A-C', 4)
