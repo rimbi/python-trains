@@ -21,7 +21,7 @@ class RouteInfo(object):
         except ValueError:
             raise InvalidRouteConfiguration('')
 
-    def get_distance(self, route):
+    def get_route_distance(self, route):
         stops = route.split('-')
         paths = [(stops[i], stops[i+1]) for i in range(0, len(stops)-1)]
         try:

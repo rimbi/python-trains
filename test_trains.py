@@ -6,7 +6,7 @@ def test_setup_should_work_with_single_route_info():
     # given
     setup = RouteInfo('AB5')
     # when
-    distance = setup.get_distance('A-B')
+    distance = setup.get_route_distance('A-B')
     # then
     expect(distance).to(be(5))
 
@@ -15,7 +15,7 @@ def test_setup_should_work_with_multiple_route_info():
     # given
     setup = RouteInfo('AB5, CD4, DE6')
     # when
-    distance = setup.get_distance('C-D')
+    distance = setup.get_route_distance('C-D')
     # then
     expect(distance).to(be(4))
 
@@ -33,7 +33,7 @@ def test_setup_should_raise_no_such_route_for_invalid_route_query():
     setup = RouteInfo('AB5, CD4, DE6')
     # when
 
-    def call(): return setup.get_distance('A-C')
+    def call(): return setup.get_route_distance('A-C')
     # then
     expect(call).to(raise_error(NoSuchRoute))
 
@@ -42,7 +42,7 @@ def test_setup_should_compute_routes_with_single_stop():
     # given
     setup = RouteInfo('AB5, BC4, CD6')
     # when
-    distance = setup.get_distance('A-B-C')
+    distance = setup.get_route_distance('A-B-C')
     # then
     expect(distance).to(be(9))
 
@@ -51,7 +51,7 @@ def test_setup_should_compute_routes_with_multiple_stops():
     # given
     setup = RouteInfo('AB5, BC4, CD6')
     # when
-    distance = setup.get_distance('A-B-C-D')
+    distance = setup.get_route_distance('A-B-C-D')
     # then
     expect(distance).to(be(15))
 

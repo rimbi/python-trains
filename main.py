@@ -7,7 +7,7 @@ from trains import RouteInfo, NoSuchRoute, InvalidRouteConfiguration
 
 def print_distance(route):
     try:
-        print setup.get_distance(route)
+        print setup.get_route_distance(route)
     except NoSuchRoute:
         print 'NO SUCH ROUTE'
 
