@@ -45,3 +45,12 @@ def test_setup_should_compute_routes_with_single_stop():
     distance = setup.get_distance('A-B-C')
     # then
     expect(distance).to(be(9))
+
+
+def test_setup_should_compute_routes_with_multiple_stops():
+    # given
+    setup = Setup('AB5-BC4-CD6')
+    # when
+    distance = setup.get_distance('A-B-C-D')
+    # then
+    expect(distance).to(be(15))
