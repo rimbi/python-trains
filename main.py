@@ -16,8 +16,12 @@ class Setup(object):
             raise InvalidRouteConfiguration('')
 
     def get_distance(self, route):
+        stops = route.split('-')
+        paths = []
+        for i in range(0, len(stops)-1):
+            paths.append('{}-{}'.format(stops[i], stops[i+1]))
         try:
-            return self.routes[route]
+            return sum(self.routes[p] for p in paths)
         except KeyError:
             raise NoSuchRoute
 

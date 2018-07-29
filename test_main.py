@@ -36,3 +36,12 @@ def test_setup_should_raise_no_such_route_for_invalid_route_query():
     def call(): return setup.get_distance('A-C')
     # then
     expect(call).to(raise_error(NoSuchRoute))
+
+
+def test_setup_should_compute_routes_with_single_stop():
+    # given
+    setup = Setup('AB5-BC4-CD6')
+    # when
+    distance = setup.get_distance('A-B-C')
+    # then
+    expect(distance).to(be(9))
