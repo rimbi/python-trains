@@ -7,13 +7,7 @@ class NoSuchRoute(Exception):
     pass
 
 
-class Stop(object):
-
-    def __init__(self, name):
-        self.name = name
-
-
-class Setup(object):
+class RouteInfo(object):
     def __init__(self, config):
         try:
             paths = [p.strip() for p in config.split(',')]
@@ -125,7 +119,7 @@ def print_number_of_different_routes_within_a_distance(route, distance):
 
 if __name__ == '__main__':
     route = 'AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7'
-    setup = Setup(route)
+    setup = RouteInfo(route)
     print_distance('A-B-C')
     print_distance('A-D')
     print_distance('A-D-C')
