@@ -56,7 +56,7 @@ class RouteInfo(object):
     def get_number_of_routes_with_exact_stops(self, route, stops):
         return self.__get_number_of_routes(route, stops, lambda x: x == stops)
 
-    def get_length_of_the_shortest_route(self, route):
+    def __get_routes_with_distance(self, route):
         start, end = route.split('-')
         visited = []
 
@@ -67,19 +67,12 @@ class RouteInfo(object):
         def route_length(route):
             return sum(path_length(p) for p in route)
 
-        return min(route_length(r)
-                   for r in self.__get_routes(start, end, visited))
+        return ((r, route_length(r))
+                for r in self.__get_routes(start, end, visited))
+
+    def get_length_of_the_shortest_route(self, route):
+        return min(l for _, l in self.__get_routes_with_distance(route))
 
     def get_number_of_different_routes_within_a_distance(self, route, max_distance):
-        start, end = route.split('-')
-        visited = []
-
-        def path_length(p):
-            start, end = p.split('-')
-            return self.routes[start][end]
-
-        def route_length(route):
-            return sum(path_length(p) for p in route)
-
-        return len([r for r in self.__get_routes(start, end, visited)
-                    if route_length(r) < max_distance])
+        return len([l for _, l in self.__get_routes_with_distance(route)
+                    if l < max_distance])
