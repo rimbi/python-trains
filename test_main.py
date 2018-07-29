@@ -1,5 +1,5 @@
 from expects import expect, be, raise_error
-from main import RouteInfo, InvalidRouteConfiguration, NoSuchRoute
+from trains import RouteInfo, InvalidRouteConfiguration, NoSuchRoute
 
 
 def test_setup_should_work_with_single_route_info():
