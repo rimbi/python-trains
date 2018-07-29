@@ -10,8 +10,8 @@ class NoSuchRoute(Exception):
 class Setup(object):
     def __init__(self, config):
         try:
-            self.routes = {'{}-{}'.format(r[0], r[1]): int(r[2:])
-                           for r in config.split('-')}
+            self.routes = {'{}-{}'.format(r.strip()[0], r.strip()[1]): int(r.strip()[2:])
+                           for r in config.split(',')}
         except ValueError:
             raise InvalidRouteConfiguration('')
 

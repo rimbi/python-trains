@@ -13,7 +13,7 @@ def test_setup_should_work_with_single_route_info():
 
 def test_setup_should_work_with_multiple_route_info():
     # given
-    setup = Setup('AB5-CD4-DE6')
+    setup = Setup('AB5, CD4, DE6')
     # when
     distance = setup.get_distance('C-D')
     # then
@@ -23,14 +23,14 @@ def test_setup_should_work_with_multiple_route_info():
 def test_setup_should_raise_exception_when_invalid_route_configuration_provided():
     # given
     # when
-    def call(): return Setup('AB5-C4D-DE6')
+    def call(): return Setup('AB5, C4D, DE6')
     # then
     expect(call).to(raise_error(InvalidRouteConfiguration))
 
 
 def test_setup_should_raise_no_such_route_for_invalid_route_query():
     # given
-    setup = Setup('AB5-CD4-DE6')
+    setup = Setup('AB5, CD4, DE6')
     # when
 
     def call(): return setup.get_distance('A-C')
@@ -40,7 +40,7 @@ def test_setup_should_raise_no_such_route_for_invalid_route_query():
 
 def test_setup_should_compute_routes_with_single_stop():
     # given
-    setup = Setup('AB5-BC4-CD6')
+    setup = Setup('AB5, BC4, CD6')
     # when
     distance = setup.get_distance('A-B-C')
     # then
@@ -49,7 +49,7 @@ def test_setup_should_compute_routes_with_single_stop():
 
 def test_setup_should_compute_routes_with_multiple_stops():
     # given
-    setup = Setup('AB5-BC4-CD6')
+    setup = Setup('AB5, BC4, CD6')
     # when
     distance = setup.get_distance('A-B-C-D')
     # then
