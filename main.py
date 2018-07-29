@@ -33,7 +33,7 @@ class Setup(object):
         except KeyError:
             raise NoSuchRoute
 
-    def __get_trips(self, start, end, visited, stops):
+    def __get_routes(self, start, end, visited, stops):
         if stops < 0:
             return []
         stops -= 1
@@ -43,20 +43,20 @@ class Setup(object):
             if x == end:
                 # print visited, edge, stops
                 trips += [visited + [edge]]
-            trips += self.__get_trips(x, end, visited + [edge], stops)
+            trips += self.__get_routes(x, end, visited + [edge], stops)
         return trips
 
-    def __get_number_of_trips(self, route, stops, predicate):
+    def __get_number_of_routes(self, route, stops, predicate):
         start, end = route.split('-')
         visited = []
-        return len([s for s in self.__get_trips(start, end, visited, stops)
+        return len([s for s in self.__get_routes(start, end, visited, stops)
                     if predicate(len(s))])
 
-    def get_number_of_trips_with_max_stops(self, route, stops):
-        return self.__get_number_of_trips(route, stops, lambda x: x <= stops)
+    def get_number_of_routes_with_max_stops(self, route, stops):
+        return self.__get_number_of_routes(route, stops, lambda x: x <= stops)
 
-    def get_number_of_trips_with_exact_stops(self, route, stops):
-        return self.__get_number_of_trips(route, stops, lambda x: x == stops)
+    def get_number_of_routes_with_exact_stops(self, route, stops):
+        return self.__get_number_of_routes(route, stops, lambda x: x == stops)
 
     def get_length_of_the_shortest_route(self, route):
         start, end = route.split('-')
@@ -70,7 +70,7 @@ class Setup(object):
         def route_length(route):
             return sum(path_length(p) for p in route)
 
-        return min(route_length(r) for r in self.__get_trips(start, end, visited, MAX_STOPS))
+        return min(route_length(r) for r in self.__get_routes(start, end, visited, MAX_STOPS))
 
 
 def print_distance(route):
@@ -82,14 +82,14 @@ def print_distance(route):
 
 def print_number_of_routes_with_max_stops(route, stops):
     try:
-        print setup.get_number_of_trips_with_max_stops(route, stops)
+        print setup.get_number_of_routes_with_max_stops(route, stops)
     except NoSuchRoute:
         print 'NO SUCH ROUTE'
 
 
 def print_number_of_routes_with_exact_stops(route, stops):
     try:
-        print setup.get_number_of_trips_with_exact_stops(route, stops)
+        print setup.get_number_of_routes_with_exact_stops(route, stops)
     except NoSuchRoute:
         print 'NO SUCH ROUTE'
 
